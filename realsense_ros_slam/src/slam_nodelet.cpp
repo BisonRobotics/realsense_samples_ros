@@ -361,7 +361,7 @@ public:
     double feTimeStamp = sample->images[static_cast<uint8_t>(rs::core::stream_type::fisheye)]->query_time_stamp();
 
     // Publish camera pose
-    rs::slam::PoseMatrix4f cameraPose;
+    /*rs::slam::PoseMatrix4f cameraPose;
     slamPtr->get_camera_pose(cameraPose);
     geometry_msgs::PoseStamped pose_msg = getPoseStampedMsg(cameraPose, feFrameNum, feTimeStamp);
     pub_pose.publish(pose_msg);
@@ -405,7 +405,7 @@ public:
       tf2::convert<tf2::Quaternion, geometry_msgs::Quaternion>(quat, odom.pose.pose.orientation);
       pub_odom.publish(odom);
     }
-
+*/
     // Publish occupancy map
     int wmap = 512;
     int hmap = 512;
