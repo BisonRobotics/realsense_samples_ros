@@ -9,8 +9,8 @@
     <arg name="publish_odometry"        default="false" />
     <arg name="map_resolution"          default="0.05" />
     <arg name="hoi_min"                 default="-0.5" />
-    <arg name="hoi_max"                 default="0.1" />
-    <arg name="doi_min"                 default="0.3" />
+    <arg name="hoi_max"                 default="0.3" />
+    <arg name="doi_min"                 default="0.1" />
     <arg name="doi_max"                 default="3.0" />
     <arg name="load_relocalization_map" default=""/>
     <arg name="load_occupancy_map"      default=""/>

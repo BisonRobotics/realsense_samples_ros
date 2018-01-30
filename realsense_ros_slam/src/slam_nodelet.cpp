@@ -325,11 +325,11 @@ geometry_msgs::Pose poseMatrixToMsg(rs::slam::PoseMatrix4f camera_pose)
   return pose_msg;
 }
 
-geometry_msgs::PoseStamped getPoseStampedMsg(rs::slam::PoseMatrix4f cameraPose, uint64_t frameNum, double timestamp_ms)
+geometry_msgs::PoseStamped getPoseStampedMsg(uint64_t frameNum, double timestamp_ms)
 {
-  std_msgs::Header header;
+ std_msgs::Header header;
   header.stamp = ros::Time(timestamp_ms / 1000);
-  header.frame_id = "camera_link";
+  header.frame_id = "base_link";
   if (frameNum > INT32_MAX)
   {
     header.seq = frameNum - INT32_MAX;
@@ -341,7 +341,23 @@ geometry_msgs::PoseStamped getPoseStampedMsg(rs::slam::PoseMatrix4f cameraPose, 
 
   geometry_msgs::PoseStamped pose_stamped_msg;
   pose_stamped_msg.header = header;
-  pose_stamped_msg.pose = poseMatrixToMsg(cameraPose);
+  
+ // pose_stamped_msg.pose = poseMatrixToMsg(cameraPose);
+  tf2_ros::Buffer tfBuffer;
+  tf2_ros::TransformListener tfListener(tfBuffer);
+  geometry_msgs::TransformStamped tfStamped;
+  try {
+    tfStamped = tfBuffer.lookupTransform ("map", "base_link", ros::Time(0));
+  } catch (tf2::TransformException &ex){
+  
+  }
+//  geometry_msgs::PoseStamped pos_stamped_msg;
+  pose_stamped_msg.pose.position.x = tfStamped.transform.translation.x;
+  pose_stamped_msg.pose.position.y = tfStamped.transform.translation.y;
+  pose_stamped_msg.pose.orientation.w = tfStamped.transform.rotation.w;
+  pose_stamped_msg.pose.orientation.x = tfStamped.transform.rotation.x;
+  pose_stamped_msg.pose.orientation.y = tfStamped.transform.rotation.y;
+  pose_stamped_msg.pose.orientation.z = tfStamped.transform.rotation.z;
   return pose_stamped_msg;
 }
 
@@ -359,13 +375,14 @@ public:
     rs::slam::slam *slamPtr = dynamic_cast< rs::slam::slam * >(sender);
     uint64_t feFrameNum = sample->images[static_cast<uint8_t>(rs::core::stream_type::fisheye)]->query_frame_number();
     double feTimeStamp = sample->images[static_cast<uint8_t>(rs::core::stream_type::fisheye)]->query_time_stamp();
+    
 
     // Publish camera pose
-    /*rs::slam::PoseMatrix4f cameraPose;
-    slamPtr->get_camera_pose(cameraPose);
-    geometry_msgs::PoseStamped pose_msg = getPoseStampedMsg(cameraPose, feFrameNum, feTimeStamp);
+    //rs::slam::PoseMatrix4f cameraPose;
+//    slamPtr->get_camera_pose(cameraPose);
+    geometry_msgs::PoseStamped pose_msg = getPoseStampedMsg(feFrameNum, feTimeStamp);
     pub_pose.publish(pose_msg);
-
+/*
     // Publish relocalized camera pose, if any
     rs::slam::PoseMatrix4f relocPose;
     if (slamPtr->get_relocalization_pose(relocPose))
@@ -441,6 +458,7 @@ public:
     }
     std::vector<signed char> vMap(ipNavMap->imageData, ipNavMap->imageData + wmap * hmap);
     map_msg.data = vMap;
+    map_msg.header.frame_id = "base_link";
     map_msg.info.resolution = map_resolution;
     map_msg.info.width      = wmap;
     map_msg.info.height     = hmap;

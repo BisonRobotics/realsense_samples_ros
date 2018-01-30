@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="rviz"    type="rviz"                         name="rviz_demo"                args="-d $(find realsense_ros_slam)/launch/demo_settings.rviz" />
+
+</launch>
