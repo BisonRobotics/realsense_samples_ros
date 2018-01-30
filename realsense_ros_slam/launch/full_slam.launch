@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find localization)/launch/localization_tests.launch">
+  <include file="$(find realsense_ros_slam)/launch/demo_slam.launch">
+</launch>
