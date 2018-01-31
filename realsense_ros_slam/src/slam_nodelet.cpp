@@ -33,8 +33,8 @@ ros::Publisher pub_pose2d, pub_pose, pub_map, pub_accuracy, pub_reloc, pub_odom;
 geometry_msgs::Pose2D pose2d;
 
 IplImage * ipNavMap = NULL;
-std::vector< stRobotPG > g_robotPGStack;
-std::vector< CvPoint > g_relocalizationPointStack;
+//std::vector< stRobotPG > g_robotPGStack;
+//std::vector< CvPoint > g_relocalizationPointStack;
 
 ros::ServiceServer reset_srv, save_output_srv;
 
@@ -398,16 +398,20 @@ public:
     accuracyMsg.header.seq = feFrameNum;
     accuracyMsg.tracking_accuracy = (uint32_t)accuracy;
     pub_accuracy.publish(accuracyMsg);
-
+*/
     // Publish 2D pose
     Eigen::Vector3f gravity = Eigen::Vector3f(0, 1, 0);
-    stRobotPG robotPG;
-    convertToPG(cameraPose, gravity, robotPG);
-    pose2d.x = robotPG.x;
-    pose2d.y = robotPG.y;
-    pose2d.theta = robotPG.theta;
+ //   stRobotPG robotPG;
+  //  convertToPG(cameraPose, gravity, robotPG);
+    pose2d.x = pose_msg.pose.position.x;
+    pose2d.y = pose_msg.pose.position.y;
+    tf::Quaternion q(pose_msg.pose.orientation.w, pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z);
+    tf::Matrix3x3 ma(q);
+    double roll,pitch,yaw;
+    ma.getRPY(roll, pitch, yaw);
+    pose2d.theta = yaw;
     pub_pose2d.publish(pose2d);
-    g_robotPGStack.push_back(robotPG);
+   // g_robotPGStack.push_back(robotPG);
 
     // Publish odometry
     if (is_pub_odom)
@@ -422,7 +426,7 @@ public:
       tf2::convert<tf2::Quaternion, geometry_msgs::Quaternion>(quat, odom.pose.pose.orientation);
       pub_odom.publish(odom);
     }
-*/
+
     // Publish occupancy map
     int wmap = 512;
     int hmap = 512;
