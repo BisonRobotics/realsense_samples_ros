@@ -622,6 +622,7 @@ private:
       } // for
   
     pointcloud_publisher_.publish(msg_pointcloud);
+//    info_publisher_[rs::stream::depth].publish(camera_info_[rs::stream::depth]);
   }
 
 
