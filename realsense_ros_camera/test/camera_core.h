@@ -63,23 +63,22 @@ float g_color_avg = 0.0f;
 float g_fisheye_avg = 0.0f;
 float g_pc_depth_avg = 0.0f;
 
-int g_height_recv[STREAM_COUNT] = {0};
-int g_width_recv[STREAM_COUNT] = {0};
-uint32_t g_step_recv[STREAM_COUNT] = {0};  // Received stream step.
+int g_height_recv[STREAM_COUNT] = { 0 };
+int g_width_recv[STREAM_COUNT] = { 0 };
+uint32_t g_step_recv[STREAM_COUNT] = { 0 };  // Received stream step.
 
 std::string g_encoding_recv[STREAM_COUNT];  // Expected stream encoding.
 
-int g_caminfo_height_recv[STREAM_COUNT] = {0};
-int g_caminfo_width_recv[STREAM_COUNT] = {0};
-double g_color_caminfo_D_recv[5] = {0.0};
-double g_depth_caminfo_D_recv[5] = {0.0};
-double g_fisheye_caminfo_D_recv[5] = {0.0};
+int g_caminfo_height_recv[STREAM_COUNT] = { 0 };
+int g_caminfo_width_recv[STREAM_COUNT] = { 0 };
+double g_color_caminfo_D_recv[5] = { 0.0 };
+double g_depth_caminfo_D_recv[5] = { 0.0 };
+double g_fisheye_caminfo_D_recv[5] = { 0.0 };
 
-double g_caminfo_rotation_recv[STREAM_COUNT][9] = {{0.0}};
-double g_caminfo_projection_recv[STREAM_COUNT][12] = {{0.0}};
+double g_caminfo_rotation_recv[STREAM_COUNT][9] = { { 0.0 } };
+double g_caminfo_projection_recv[STREAM_COUNT][12] = { { 0.0 } };
 
 std::string g_dmodel_recv[STREAM_COUNT];
 std::string g_camera_type;
-
 
 #endif  // CAMERA_CORE_H  // NOLINT(build/header_guard)
