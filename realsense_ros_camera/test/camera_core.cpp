@@ -3,8 +3,8 @@
 
 #include <gtest/gtest.h>
 #include "camera_core.h"  // NOLINT(build/include)
-#include <string>  // Added to satisfy roslint
-#include <vector>  // Added to satisfy roslint
+#include <string>         // Added to satisfy roslint
+#include <vector>         // Added to satisfy roslint
 
 using std::string;
 using std::stringstream;
@@ -139,8 +139,7 @@ void accelCallback(const sensor_msgs::ImuConstPtr &imu)
   g_accel_recv = false;
   if (imu->linear_acceleration_covariance[0] != -1.0)
   {
-    if ((imu->linear_acceleration.x != 0.000) ||
-        (imu->linear_acceleration.y != 0.000) ||
+    if ((imu->linear_acceleration.x != 0.000) || (imu->linear_acceleration.y != 0.000) ||
         (imu->linear_acceleration.z != 0.000))
     {
       g_accel_recv = true;
@@ -153,9 +152,7 @@ void gyroCallback(const sensor_msgs::ImuConstPtr &imu)
   g_gyro_recv = false;
   if (imu->angular_velocity_covariance[0] != -1.0)
   {
-    if ((imu->angular_velocity.x != 0.0) ||
-        (imu->angular_velocity.y != 0.0) ||
-        (imu->angular_velocity.z != 0.0))
+    if ((imu->angular_velocity.x != 0.0) || (imu->angular_velocity.y != 0.0) || (imu->angular_velocity.z != 0.0))
     {
       g_gyro_recv = true;
     }
@@ -326,7 +323,6 @@ TEST(RealsenseTests, testDepthCameraInfo)
   }
 }
 
-
 TEST(RealsenseTests, testIsFisheyeStreamEnabled)
 {
   if (g_camera_type != "ZR300")
@@ -341,7 +337,6 @@ TEST(RealsenseTests, testIsFisheyeStreamEnabled)
     EXPECT_FALSE(g_fisheye_recv);
   }
 }
-
 
 TEST(RealsenseTests, testFisheyeStream)
 {
@@ -479,7 +474,8 @@ void fillConfigMap(int argc, char **argv)
 
     if (g_config_args.find("depth_encoding") != g_config_args.end())
     {
-      ROS_INFO("RealSense camera test - Setting %s to %s", "depth_encoding", g_config_args.at("depth_encoding").c_str());
+      ROS_INFO("RealSense camera test - Setting %s to %s", "depth_encoding",
+               g_config_args.at("depth_encoding").c_str());
       g_depth_encoding_exp = g_config_args.at("depth_encoding").c_str();
     }
     if (g_config_args.find("depth_height") != g_config_args.end())
@@ -513,7 +509,8 @@ void fillConfigMap(int argc, char **argv)
     }
     if (g_config_args.find("color_encoding") != g_config_args.end())
     {
-      ROS_INFO("RealSense camera test - Setting %s to %s", "color_encoding", g_config_args.at("color_encoding").c_str());
+      ROS_INFO("RealSense camera test - Setting %s to %s", "color_encoding",
+               g_config_args.at("color_encoding").c_str());
       g_color_encoding_exp = g_config_args.at("color_encoding").c_str();
     }
     if (g_config_args.find("color_height") != g_config_args.end())
@@ -551,7 +548,8 @@ void fillConfigMap(int argc, char **argv)
 
     if (g_config_args.find("fisheye_height") != g_config_args.end())
     {
-      ROS_INFO("RealSense camera test - Setting %s to %s", "fisheye_height", g_config_args.at("fisheye_height").c_str());
+      ROS_INFO("RealSense camera test - Setting %s to %s", "fisheye_height",
+               g_config_args.at("fisheye_height").c_str());
       g_depth_height_exp = atoi(g_config_args.at("fisheye_height").c_str());
     }
     if (g_config_args.find("fisheye_width") != g_config_args.end())
@@ -562,7 +560,7 @@ void fillConfigMap(int argc, char **argv)
   }
 }
 
-int main(int argc, char **argv) //try
+int main(int argc, char **argv)  // try
 {
   testing::InitGoogleTest(&argc, argv);
 
@@ -605,4 +603,4 @@ int main(int argc, char **argv) //try
 
   return RUN_ALL_TESTS();
 }
-//catch(...) {}  // catch the "testing::internal::<unnamed>::ClassUniqueToAlwaysTrue" from gtest
+// catch(...) {}  // catch the "testing::internal::<unnamed>::ClassUniqueToAlwaysTrue" from gtest
